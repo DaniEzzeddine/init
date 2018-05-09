@@ -1,0 +1,11 @@
+sumfile=~/.sumfile
+cronfile=/etc/crontab
+if [ ! -z "$sumfile" ];
+	then
+		md5sum "$cronfile" > "$sumfile"
+fi
+if ! md5sum -c --status "$sumfile";
+	then
+		echo crontab was modified | mail -s "Crontab modified" root
+		md5sum "$cronfile" > "$sumfile"
+fi
